@@ -99,7 +99,7 @@ internal class TypeDetailsCache
             var hasValidationOnProperty = validationAttributes.Length > 0 || isNonNullableReferenceType;
             var hasSkipRecursionOnProperty = skipRecursionAttribute is not null;
             var enumerableType = GetEnumerableType(property.PropertyType);
-            if (enumerableType != null)
+            if (enumerableType != null && property.PropertyType != typeof(string))
             {
                 Visit(enumerableType, visited, ref requiresAsync);
             }
