@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MiniValidation;
 
-var title = args.Length > 0 ? args[0] : "";
+var nameAndCategory = args.Length > 0 ? args[0] : null;
 
 var widgets = new List<Widget>
 {
-    new Widget { Name = title },
-    new WidgetWithCustomValidation { Name = title }
+    new Widget { Name = nameAndCategory, Category = nameAndCategory },
+    new WidgetWithCustomValidation { Name = nameAndCategory, Category = nameAndCategory }
 };
 
 var allValid = true;
@@ -37,6 +37,9 @@ class Widget
 {
     [Required, MinLength(3), Display(Name = "Widget name")]
     public string Name { get; set; }
+    
+    // Non-nullable reference types are required automatically
+    public string Category { get; set; }
 
     public override string ToString() => Name;
 }
