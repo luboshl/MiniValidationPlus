@@ -1,5 +1,10 @@
 # MiniValidationPlus
+
+👉 with support of non-nullable reference types.
+
 A minimalistic validation library built atop the existing features in .NET's `System.ComponentModel.DataAnnotations` namespace. Adds support for single-line validation calls and recursion with cycle detection.
+
+This project is fork of the original great repo [MiniValidation](https://github.com/DamianEdwards/MiniValidation) from [Damian Edwards](https://github.com/DamianEdwards) and adds support of **non-nullable reference types**. Now validation works more like validation in model binding of ASP.NET Core MVC.
 
 Supports .NET Standard 2.0 compliant runtimes.
 
