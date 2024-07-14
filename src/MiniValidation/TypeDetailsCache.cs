@@ -187,7 +187,17 @@ internal class TypeDetailsCache
         || type == typeof(DateOnly)
         || type == typeof(TimeOnly)
 #endif
-        ;
+        || type == typeof(Type)
+        || type == typeof(Delegate)
+        || type == typeof(MethodInfo)
+        || type == typeof(MemberInfo)
+        || type == typeof(ParameterInfo)
+        || type == typeof(Assembly)
+        || type == typeof(Uri)
+        || type == typeof(CancellationToken)
+        || type == typeof(Stream)
+    // TODO: Add extension point to add other types to ignore
+    ;
 
     private static (ValidationAttribute[]?, DisplayAttribute?, SkipRecursionAttribute?) GetPropertyAttributes(ParameterInfo[]? primaryCtorParameters, PropertyInfo property)
     {
