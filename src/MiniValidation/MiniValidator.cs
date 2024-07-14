@@ -638,12 +638,12 @@ public static class MiniValidator
         {
             if (!result.ContainsKey(fieldError.Key))
             {
-                result.Add(fieldError.Key, fieldError.Value.ToArray());
+                result.Add(fieldError.Key, fieldError.Value.Distinct().ToArray());
             }
             else
             {
                 var existingFieldErrors = result[fieldError.Key];
-                result[fieldError.Key] = existingFieldErrors.Concat(fieldError.Value).ToArray();
+                result[fieldError.Key] = existingFieldErrors.Concat(fieldError.Value).Distinct().ToArray();
             }
         }
 
