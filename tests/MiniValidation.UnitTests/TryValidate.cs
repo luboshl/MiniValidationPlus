@@ -95,6 +95,73 @@ public class TryValidate
         Assert.False(result);
         Assert.Single(errors);
     }
+    
+    [Fact]
+    public void NonNullable_Invalid_When_Null()
+    {
+        var thingToValidate = new TestType { NonNullableString = null! };
+
+        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+
+        Assert.False(result);
+        var entry = Assert.Single(errors);
+        Assert.Equal(nameof(TestType.NonNullableString), entry.Key);
+    }
+
+    [Fact]
+    public void NonNullable_Valid_When_Empty()
+    {
+        var thingToValidate = new TestType { NonNullableString = string.Empty };
+
+        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+
+        Assert.True(result);
+        Assert.Empty(errors);
+    }
+
+    [Fact]
+    public void NonNullable_Valid_When_NonEmpty_Value()
+    {
+        var thingToValidate = new TestType { NonNullableString = "test" };
+
+        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+
+        Assert.True(result);
+        Assert.Empty(errors);
+    }
+
+    [Fact]
+    public void NonNullable_Valid_When_Empty_On_Record()
+    {
+        var thingToValidate = new TestRecordType(NonNullableString: string.Empty);
+
+        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+
+        Assert.True(result);
+        Assert.Empty(errors);
+    }
+
+    [Fact]
+    public void NonNullable_Valid_When_NonEmpty_On_Record()
+    {
+        var thingToValidate = new TestRecordType(NonNullableString: "test");
+
+        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+
+        Assert.True(result);
+        Assert.Empty(errors);
+    }
+
+    [Fact]
+    public void NonNullable_Invalid_When_Null_On_Record()
+    {
+        var thingToValidate = new TestRecordType(NonNullableString: null!);
+
+        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+
+        Assert.False(result);
+        Assert.Single(errors);
+    }
 #endif
 
     [Fact]

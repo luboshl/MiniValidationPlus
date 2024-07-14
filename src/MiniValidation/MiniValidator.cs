@@ -44,7 +44,8 @@ public static class MiniValidator
         return typeof(IValidatableObject).IsAssignableFrom(targetType)
             || typeof(IAsyncValidatableObject).IsAssignableFrom(targetType)
             || (recurse && typeof(IEnumerable).IsAssignableFrom(targetType))
-            || _typeDetailsCache.Get(targetType).Properties.Any(p => p.HasValidationAttributes || recurse);
+            || _typeDetailsCache.Get(targetType).Properties
+                .Any(p => p.HasValidationAttributes || p.IsNonNullableType || recurse);
     }
 
     /// <summary>
@@ -411,11 +412,31 @@ public static class MiniValidator
                 }
             }
 
-            if (recurse && propertyValue is not null &&
-                (property.Recurse
-                 || typeof(IValidatableObject).IsAssignableFrom(propertyValueType)
-                 || typeof(IAsyncValidatableObject).IsAssignableFrom(propertyValueType)
-                 || properties.Any(p => p.Recurse)))
+            if (property.IsNonNullableType)
+            {
+                validationContext.MemberName = property.Name;
+                validationContext.DisplayName = GetDisplayName(property);
+                validationResults ??= new();
+                var propertyIsValid = propertyValue is not null;
+
+                if (!propertyIsValid)
+                {
+                    validationResults.Add(new ValidationResult($"The {validationContext.DisplayName} field is required.", new[] { property.Name }));
+
+                    ProcessValidationResults(property.Name, validationResults, workingErrors, prefix);
+                    isValid = false;
+                }
+            }
+
+            if (recurse
+                && propertyValue is not null
+                && (property.Recurse
+                    /*
+                    || typeof(IValidatableObject).IsAssignableFrom(propertyValueType)
+                    || typeof(IAsyncValidatableObject).IsAssignableFrom(propertyValueType)
+                    || properties.Any(p => p.Recurse)
+                    */
+                ))
             {
                 propertiesToRecurse!.Add(property, propertyValue);
             }
@@ -598,9 +619,11 @@ public static class MiniValidator
                 {
                     break;
                 }
+
                 index++;
             }
         }
+
         return isValid;
     }
 
@@ -639,6 +662,7 @@ public static class MiniValidator
                 {
                     errors.Add(key, new());
                 }
+
                 errors[key].Add(result.ErrorMessage ?? "");
                 hasMemberNames = true;
             }
@@ -651,6 +675,7 @@ public static class MiniValidator
                 {
                     errors.Add(key, new());
                 }
+
                 errors[key].Add(result.ErrorMessage ?? "");
             }
         }
