@@ -398,34 +398,33 @@ public static class MiniValidator
             var propertyValueType = propertyValue?.GetType();
             var (properties, _) = _typeDetailsCache.Get(propertyValueType);
 
+            validationResults ??= new();
+            var isPropertyValid = true;
+
             if (property.HasValidationAttributes)
             {
                 validationContext.MemberName = property.Name;
                 validationContext.DisplayName = GetDisplayName(property);
-                validationResults ??= new();
-                var propertyIsValid = Validator.TryValidateValue(propertyValue!, validationContext, validationResults, property.ValidationAttributes);
 
-                if (!propertyIsValid)
-                {
-                    ProcessValidationResults(property.Name, validationResults, workingErrors, prefix);
-                    isValid = false;
-                }
+                isPropertyValid = Validator.TryValidateValue(propertyValue!, validationContext, validationResults, property.ValidationAttributes);
             }
 
             if (property.IsNonNullableType)
             {
                 validationContext.MemberName = property.Name;
                 validationContext.DisplayName = GetDisplayName(property);
-                validationResults ??= new();
-                var propertyIsValid = propertyValue is not null;
 
-                if (!propertyIsValid)
+                if (propertyValue is null)
                 {
                     validationResults.Add(new ValidationResult($"The {validationContext.DisplayName} field is required.", new[] { property.Name }));
-
-                    ProcessValidationResults(property.Name, validationResults, workingErrors, prefix);
-                    isValid = false;
+                    isPropertyValid = false;
                 }
+            }
+
+            if (!isPropertyValid)
+            {
+                ProcessValidationResults(property.Name, validationResults, workingErrors, prefix);
+                isValid = false;
             }
 
             if (recurse
