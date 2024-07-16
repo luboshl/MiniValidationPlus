@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 
 namespace MiniValidation;
 
@@ -87,10 +89,17 @@ internal class TypeDetailsCache
 
             var (validationAttributes, displayAttribute, skipRecursionAttribute) = TypeDetailsCache.GetPropertyAttributes(primaryCtorParams, property);
             validationAttributes ??= Array.Empty<ValidationAttribute>();
-            var hasValidationOnProperty = validationAttributes.Length > 0;
+
+#if NET6_0_OR_GREATER
+            var isNonNullableReferenceType = NonNullablePropertyHelper.IsNonNullableReferenceType(property);
+#else
+            var isNonNullableReferenceType = false;
+#endif
+
+            var hasValidationOnProperty = validationAttributes.Length > 0 || isNonNullableReferenceType;
             var hasSkipRecursionOnProperty = skipRecursionAttribute is not null;
             var enumerableType = GetEnumerableType(property.PropertyType);
-            if (enumerableType != null)
+            if (enumerableType != null && property.PropertyType != typeof(string))
             {
                 Visit(enumerableType, visited, ref requiresAsync);
             }
@@ -100,7 +109,16 @@ internal class TypeDetailsCache
             if (type == property.PropertyType && !hasSkipRecursionOnProperty)
             {
                 propertiesToValidate ??= new List<PropertyDetails>();
-                propertiesToValidate.Add(new(property.Name, displayAttribute, property.PropertyType, PropertyHelper.MakeNullSafeFastPropertyGetter(property), validationAttributes, true, enumerableType));
+                propertiesToValidate.Add(
+                    new PropertyDetails(
+                        property.Name,
+                        displayAttribute,
+                        property.PropertyType,
+                        PropertyHelper.MakeNullSafeFastPropertyGetter(property),
+                        validationAttributes,
+                        true,
+                        enumerableType,
+                        isNonNullableReferenceType));
                 hasPropertiesOfOwnType = true;
                 continue;
             }
@@ -118,10 +136,19 @@ internal class TypeDetailsCache
                 || propertyTypeSupportsPolymorphism)
                 && !hasSkipRecursionOnProperty;
 
-            if (recurse || hasValidationOnProperty)
+            if (recurse || hasValidationOnProperty || isNonNullableReferenceType)
             {
                 propertiesToValidate ??= new List<PropertyDetails>();
-                propertiesToValidate.Add(new(property.Name, displayAttribute, property.PropertyType, PropertyHelper.MakeNullSafeFastPropertyGetter(property), validationAttributes, recurse, enumerableTypeHasProperties ? enumerableType : null));
+                propertiesToValidate.Add(
+                    new PropertyDetails(
+                        property.Name,
+                        displayAttribute,
+                        property.PropertyType,
+                        PropertyHelper.MakeNullSafeFastPropertyGetter(property),
+                        validationAttributes,
+                        recurse,
+                        enumerableTypeHasProperties ? enumerableType : null,
+                        isNonNullableReferenceType));
                 hasValidatableProperties = true;
             }
         }
@@ -160,7 +187,17 @@ internal class TypeDetailsCache
         || type == typeof(DateOnly)
         || type == typeof(TimeOnly)
 #endif
-        ;
+        || type == typeof(Type)
+        || type == typeof(Delegate)
+        || type == typeof(MethodInfo)
+        || type == typeof(MemberInfo)
+        || type == typeof(ParameterInfo)
+        || type == typeof(Assembly)
+        || type == typeof(Uri)
+        || type == typeof(CancellationToken)
+        || type == typeof(Stream)
+    // TODO: Add extension point to add other types to ignore
+    ;
 
     private static (ValidationAttribute[]?, DisplayAttribute?, SkipRecursionAttribute?) GetPropertyAttributes(ParameterInfo[]? primaryCtorParameters, PropertyInfo property)
     {
@@ -251,7 +288,16 @@ internal class TypeDetailsCache
     }
 }
 
-internal record PropertyDetails(string Name, DisplayAttribute? DisplayAttribute, Type Type, Func<object, object?> PropertyGetter, ValidationAttribute[] ValidationAttributes, bool Recurse, Type? EnumerableType)
+internal record PropertyDetails(
+    string Name,
+    DisplayAttribute? DisplayAttribute,
+    Type Type,
+    Func<object, object?> PropertyGetter,
+    ValidationAttribute[] ValidationAttributes,
+    bool Recurse,
+    Type? EnumerableType,
+    bool IsNonNullableType
+)
 {
     public object? GetValue(object target) => PropertyGetter(target);
 

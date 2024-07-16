@@ -4,6 +4,8 @@ namespace MiniValidation.UnitTests;
 
 class TestType
 {
+    public string NonNullableString { get; set; } = "Default";
+
     [Required]
     public string? RequiredName { get; set; } = "Default";
 
@@ -235,11 +237,15 @@ interface IAnInterface { }
 #if NET6_0_OR_GREATER
 abstract record BaseRecordType(string Type);
 
-record TestRecordType([Required, Display(Name = "Required name")] string RequiredName = "Default", [Range(10, 100)] int TenOrMore = 10)
+record TestRecordType(
+    [Required, Display(Name = "Required name")]
+    string RequiredName = "Default",
+    [Range(10, 100)] int TenOrMore = 10,
+    string NonNullableString = "Default")
     : BaseRecordType(nameof(TestRecordType))
 {
 #pragma warning disable IDE0060 // Remove unused parameter
-    public TestRecordType(string anotherParam, bool doTheThing) : this("Another name", 23)
+    public TestRecordType(string anotherParam, bool doTheThing) : this("Another name", 23, "Another string value")
 #pragma warning restore IDE0060 // Remove unused parameter
     {
     }

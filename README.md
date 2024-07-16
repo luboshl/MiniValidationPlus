@@ -1,14 +1,19 @@
-# MiniValidation
+# MiniValidationPlus
+
+👉 with support of non-nullable reference types.
+
 A minimalistic validation library built atop the existing features in .NET's `System.ComponentModel.DataAnnotations` namespace. Adds support for single-line validation calls and recursion with cycle detection.
+
+This project is fork of the original great repo [MiniValidation](https://github.com/DamianEdwards/MiniValidation) from [Damian Edwards](https://github.com/DamianEdwards) and adds support of **non-nullable reference types**. Now validation works more like validation in model binding of ASP.NET Core MVC.
 
 Supports .NET Standard 2.0 compliant runtimes.
 
 ## Installation
-[![Nuget](https://img.shields.io/nuget/v/MiniValidation)](https://www.nuget.org/packages/MiniValidation/)
+[![Nuget](https://img.shields.io/nuget/v/MiniValidationPlus)](https://www.nuget.org/packages/MiniValidationPlus/)
 
-Install the library from [NuGet](https://www.nuget.org/packages/MiniValidation):
+Install the library from [NuGet](https://www.nuget.org/packages/MiniValidationPlus):
 ``` console
-❯ dotnet add package MiniValidation
+❯ dotnet add package MiniValidationPlus
 ```
 
 ### ASP.NET Core 6+ Projects
@@ -24,12 +29,15 @@ If installing into an ASP.NET Core 6+ project, consider using the [MinimalApis.E
 ```csharp
 var widget = new Widget { Name = "" };
 
-var isValid = MiniValidator.TryValidate(widget, out var errors);
+var isValid = MiniValidatorPlus.TryValidate(widget, out var errors);
 
 class Widget
 {
     [Required, MinLength(3)]
     public string Name { get; set; }
+    
+    // Non-nullable reference types are required automatically
+    public string Category { get; set; }
 
     public override string ToString() => Name;
 }
@@ -42,12 +50,15 @@ var widget = new Widget { Name = "" };
 
 // Get your serviceProvider from wherever makes sense
 var serviceProvider = ...
-var isValid = MiniValidator.TryValidate(widget, serviceProvider, out var errors);
+var isValid = MiniValidatorPlus.TryValidate(widget, serviceProvider, out var errors);
 
 class Widget : IValidatableObject
 {
     [Required, MinLength(3)]
     public string Name { get; set; }
+    
+    // Non-nullable reference types are required automatically
+    public string Category { get; set; }
 
     public override string ToString() => Name;
 
@@ -72,19 +83,19 @@ class Widget : IValidatableObject
 
 ```csharp
 using System.ComponentModel.DataAnnotations;
-using MiniValidation;
+using MiniValidationPlus;
 
-var title = args.Length > 0 ? args[0] : "";
+var nameAndCategory = args.Length > 0 ? args[0] : "";
 
 var widgets = new List<Widget>
 {
-    new Widget { Name = title },
-    new WidgetWithCustomValidation { Name = title }
+    new Widget { Name = nameAndCategory, Category = nameAndCategory },
+    new WidgetWithCustomValidation { Name = nameAndCategory, Category = nameAndCategory }
 };
 
 foreach (var widget in widgets)
 {
-    if (!MiniValidator.TryValidate(widget, out var errors))
+    if (!MiniValidatorPlus.TryValidate(widget, out var errors))
     {
         Console.WriteLine($"{nameof(Widget)} has errors!");
         foreach (var entry in errors)
@@ -106,6 +117,9 @@ class Widget
 {
     [Required, MinLength(3)]
     public string Name { get; set; }
+    
+    // Non-nullable reference types are required automatically
+    public string Category { get; set; }
 
     public override string ToString() => Name;
 }
@@ -123,18 +137,24 @@ class WidgetWithCustomValidation : Widget, IValidatableObject
 ```
 ``` console
 ❯ widget.exe
-Widget 'widget' is valid!
 Widget has errors!
   Name:
-  - Cannot name a widget 'widget'.
+  - The Widget name field is required.
+  Category:
+  - The Category field is required.
+Widget has errors!
+  Name:
+  - The Widget name field is required.
+  Category:
+  - The Category field is required.
 
 ❯ widget.exe Ok
 Widget has errors!
   Name:
-  - The field Name must be a string or array type with a minimum length of '3'.
+  - The field Widget name must be a string or array type with a minimum length of '3'.
 Widget has errors!
   Name:
-  - The field Name must be a string or array type with a minimum length of '3'.
+  - The field Widget name must be a string or array type with a minimum length of '3'.
 
 ❯ widget.exe Widget
 Widget 'Widget' is valid!
@@ -142,15 +162,15 @@ Widget has errors!
   Name:
   - Cannot name a widget 'Widget'.
 
-❯ widget.exe MiniValidation
-Widget 'MiniValidation' is valid!
-Widget 'MiniValidation' is valid!
+❯ widget.exe MiniValidationPlus
+Widget 'MiniValidationPlus' is valid!
+Widget 'MiniValidationPlus' is valid!
 ```
 
 ### Web app (.NET 6)
 ```csharp
 using System.ComponentModel.DataAnnotations;
-using MiniValidation;
+using MiniValidationPlus;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
@@ -167,12 +187,12 @@ app.MapGet("/widgets/{name}", (string name) =>
     new Widget { Name = name });
 
 app.MapPost("/widgets", (Widget widget) =>
-    !MiniValidator.TryValidate(widget, out var errors)
+    !MiniValidatorPlus.TryValidate(widget, out var errors)
         ? Results.ValidationProblem(errors)
         : Results.Created($"/widgets/{widget.Name}", widget));
 
 app.MapPost("/widgets/custom-validation", (WidgetWithCustomValidation widget) =>
-    !MiniValidator.TryValidate(widget, out var errors)
+    !MiniValidatorPlus.TryValidate(widget, out var errors)
         ? Results.ValidationProblem(errors)
         : Results.Created($"/widgets/{widget.Name}", widget));
 
