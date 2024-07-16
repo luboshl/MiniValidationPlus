@@ -18,7 +18,7 @@ public class NonNullablePropertyHelperTests
                                                     | BindingFlags.Public
                                                     | BindingFlags.FlattenHierarchy))
         {
-            var isNonNullableReferenceType = NonNullablePropertyHelper.IsNonNullableReferenceType(property);
+            var isNonNullableReferenceType = new NonNullablePropertyHelper().IsNonNullableReferenceType(property);
             if (isNonNullableReferenceType)
             {
                 nonNullableReferenceTypes.Add(property.Name);
@@ -50,7 +50,7 @@ public class NonNullablePropertyHelperTests
                                                     | BindingFlags.Public
                                                     | BindingFlags.FlattenHierarchy))
         {
-            var isNonNullableReferenceType = NonNullablePropertyHelper.IsNonNullableReferenceType(property);
+            var isNonNullableReferenceType = new NonNullablePropertyHelper().IsNonNullableReferenceType(property);
             if (isNonNullableReferenceType)
             {
                 nonNullableReferenceTypes.Add(property.Name);
