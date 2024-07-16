@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MiniValidation.UnitTests;
+namespace MiniValidationPlus.UnitTests;
 
 public class TryValidate
 {

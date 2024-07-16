@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using MiniValidation;
+using MiniValidationPlus;
 
 var nameAndCategory = args.Length > 0 ? args[0] : null;
 

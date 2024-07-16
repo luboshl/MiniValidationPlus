@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-namespace MiniValidation;
+namespace MiniValidationPlus;
 
 /// <summary>
 /// Provides a way for an object to be validated asynchronously.

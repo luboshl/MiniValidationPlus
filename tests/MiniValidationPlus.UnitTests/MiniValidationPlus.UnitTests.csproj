@@ -11,8 +11,8 @@
   <ItemGroup>
     <Using Include="System.ComponentModel.DataAnnotations" />
     <Using Include="Xunit" />
-    <Using Include="MiniValidation" />
-    <ProjectReference Include="..\..\src\MiniValidation\MiniValidation.csproj" />
+    <Using Include="MiniValidationPlus" />
+    <ProjectReference Include="..\..\src\MiniValidationPlus\MiniValidationPlus.csproj" />
   </ItemGroup>
 
   <ItemGroup>

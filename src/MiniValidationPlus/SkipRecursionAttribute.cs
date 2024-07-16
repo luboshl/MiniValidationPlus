@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MiniValidation;
+namespace MiniValidationPlus;
 
 /// <summary>
 /// Indicates that a property should be ignored during recursive validation when using

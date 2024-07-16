@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace MiniValidation.UnitTests
+namespace MiniValidationPlus.UnitTests
 {
     internal static class TypeDescriptorExtensions
     {
