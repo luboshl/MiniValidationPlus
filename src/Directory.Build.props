@@ -10,7 +10,6 @@
     <!--<VersionSuffix Condition=" '$(ContinuousIntegrationBuild)' == 'true' And '$(IsShipCandidate)' == 'true' ">pre.$(BuildNumber)</VersionSuffix>-->
     <Authors>Lubos Hladik</Authors>
     <Copyright>Copyright © Lubos Hladik</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/luboshl/MiniValidationPlus</PackageProjectUrl>
     <RepositoryUrl>https://github.com/luboshl/MiniValidationPlus</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
