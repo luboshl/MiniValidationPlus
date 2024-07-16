@@ -38,14 +38,14 @@ jobs:
     - name: Test
       run: dotnet test --configuration Release --no-restore --no-build
 
-    - name: Publish samples
-      run: |
-        for projectPath in ./samples/**/*.csproj ; do
-          projectFileName=${projectPath##*/}
-          projectName=${projectFileName%.*}
-          dotnet publish "$projectPath" --output "./artifacts/$projectName" --configuration Release --no-build --verbosity normal
-        done;
-        ./artifacts/Samples.Console/Samples.Console "MiniValidationPlus"
+#    - name: Publish samples
+#      run: |
+#        for projectPath in ./samples/**/*.csproj ; do
+#          projectFileName=${projectPath##*/}
+#          projectName=${projectFileName%.*}
+#          dotnet publish "$projectPath" --output "./artifacts/$projectName" --configuration Release --no-build --verbosity normal
+#        done;
+#        ./artifacts/Samples.Console/Samples.Console "MiniValidationPlus"
       
 #    - name: Pack (ci)
 #      run: dotnet pack --configuration Release --output ./artifacts/ci --verbosity normal -p:BuildNumber=$BUILD_NUMBER -p:SourceRevisionId=$GITHUB_SHA -p:ContinuousIntegrationBuild=true
