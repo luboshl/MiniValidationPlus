@@ -2,7 +2,7 @@
 
 using System.Reflection;
 
-namespace MiniValidation
+namespace MiniValidationPlus
 {
     /// <summary>
     /// Helper for non-nullable reference types.

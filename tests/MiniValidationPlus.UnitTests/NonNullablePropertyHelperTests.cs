@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace MiniValidation.UnitTests;
+namespace MiniValidationPlus.UnitTests;
 
 public class NonNullablePropertyHelperTests
 {

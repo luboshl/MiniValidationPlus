@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http.HttpResults;
-using MiniValidation;
+using MiniValidationPlus;
 
 var builder = WebApplication.CreateBuilder(args);
 

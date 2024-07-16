@@ -10,7 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace MiniValidation;
+namespace MiniValidationPlus;
 
 /// <summary>
 /// An <see cref="IDictionary{TKey, TValue}"/> type to hold a small amount of items (10 or less in the common case).

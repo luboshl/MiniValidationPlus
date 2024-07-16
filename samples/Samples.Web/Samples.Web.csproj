@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MiniValidation\MiniValidation.csproj" />
+    <ProjectReference Include="..\..\src\MiniValidationPlus\MiniValidationPlus.csproj" />
   </ItemGroup>
 
 </Project>

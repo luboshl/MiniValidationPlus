@@ -9,7 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 
-namespace MiniValidation;
+namespace MiniValidationPlus;
 
 internal class TypeDetailsCache
 {

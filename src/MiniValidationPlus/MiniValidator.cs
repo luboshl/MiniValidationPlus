@@ -7,7 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace MiniValidation;
+namespace MiniValidationPlus;
 
 /// <summary>
 /// Contains methods and properties for performing validation operations with <see cref="Validator"/> on objects whos properties

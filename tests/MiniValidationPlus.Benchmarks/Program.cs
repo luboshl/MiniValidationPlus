@@ -2,7 +2,7 @@
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Running;
-using MiniValidation;
+using MiniValidationPlus;
 
 BenchmarkRunner.Run<Benchmarks>();
 
