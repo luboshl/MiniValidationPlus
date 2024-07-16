@@ -13,7 +13,7 @@ namespace MiniValidationPlus;
 /// Contains methods and properties for performing validation operations with <see cref="Validator"/> on objects whos properties
 /// are decorated with <see cref="ValidationAttribute"/>s.
 /// </summary>
-public static class MiniValidator
+public static class MiniValidatorPlus
 {
     private static readonly TypeDetailsCache _typeDetailsCache = new();
     private static readonly IDictionary<string, string[]> _emptyErrors = new ReadOnlyDictionary<string, string[]>(new Dictionary<string, string[]>());

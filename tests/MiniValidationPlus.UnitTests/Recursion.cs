@@ -9,7 +9,7 @@ public class Recursion
     {
         var thingToValidate = new TestType { RequiredName = null, Child = new TestChildType { RequiredCategory = null, MinLengthFive = "123" } };
 
-        var result = MiniValidator.TryValidate(thingToValidate, recurse: true, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: true, out var errors);
 
         Assert.False(result);
         Assert.Equal(3, errors.Count);
@@ -25,7 +25,7 @@ public class Recursion
     {
         var thingToValidate = new TestType { Child = new TestChildType { RequiredCategory = null, MinLengthFive = "123" } };
 
-        var result = MiniValidator.TryValidate(thingToValidate, recurse: true, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: true, out var errors);
 
         Assert.False(result);
         Assert.Equal(2, errors.Count);
@@ -36,7 +36,7 @@ public class Recursion
     {
         var thingToValidate = new TestType { Child = new TestChildType { RequiredCategory = null } };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -47,7 +47,7 @@ public class Recursion
     {
         var thingToValidate = new TestType { Child = new TestChildType { RequiredCategory = null, MinLengthFive = "123" } };
 
-        var result = MiniValidator.TryValidate(thingToValidate, recurse: false, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: false, out var errors);
 
         Assert.True(result);
         Assert.Empty(errors);
@@ -58,7 +58,7 @@ public class Recursion
     {
         var thingToValidate = new TestType { SkippedChild = new TestChildType { RequiredCategory = null, MinLengthFive = "123" } };
 
-        var result = MiniValidator.TryValidate(thingToValidate, recurse: false, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: false, out var errors);
 
         Assert.True(result);
         Assert.Empty(errors);
@@ -69,7 +69,7 @@ public class Recursion
     {
         var thingToValidate = new List<TestType> { new() { Child = new TestChildType { RequiredCategory = null, MinLengthFive = "123" } } };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         Assert.Equal(2, errors.Count);
@@ -80,7 +80,7 @@ public class Recursion
     {
         var thingToValidate = new List<TestType> { new() { Child = new TestChildType { RequiredCategory = null, MinLengthFive = "123" } } };
 
-        var result = MiniValidator.TryValidate(thingToValidate, recurse: true, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: true, out var errors);
 
         Assert.False(result);
         Assert.Equal(2, errors.Count);
@@ -91,7 +91,7 @@ public class Recursion
     {
         var thingToValidate = new List<TestType> { new() { Child = new TestChildType { RequiredCategory = null, MinLengthFive = "123" } } };
         
-        var result = MiniValidator.TryValidate(thingToValidate, recurse: false, out _);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: false, out _);
 
         Assert.True(result);
     }
@@ -101,7 +101,7 @@ public class Recursion
     {
         var thingToValidate = new List<TestType> { new() { SkippedChild = new() { RequiredCategory = null } } };
 
-        var result = MiniValidator.TryValidate(thingToValidate, recurse: true, out _);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: true, out _);
 
         Assert.True(result);
     }
@@ -116,7 +116,7 @@ public class Recursion
 
         TestChildType.AddDescendents(thingToValidate.Child, maxDepth);
 
-        var result = MiniValidator.TryValidate(thingToValidate, recurse: true, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: true, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -135,7 +135,7 @@ public class Recursion
             new() { RequiredName = null, TenOrMore = 5 },
         };
 
-        var result = MiniValidator.TryValidate(thingToValidate, recurse: true, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: true, out var errors);
 
         Assert.False(result);
         Assert.Equal(2, errors.Count);
@@ -151,7 +151,7 @@ public class Recursion
         thingToValidate.Children.Add(new() { });
         thingToValidate.Children.Add(new() { RequiredCategory = null });
 
-        var result = MiniValidator.TryValidate(thingToValidate, recurse: true, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: true, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -168,7 +168,7 @@ public class Recursion
             new() { RequiredName = null },
         };
 
-        var result = MiniValidator.TryValidate(thingToValidate, recurse: true, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: true, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -183,7 +183,7 @@ public class Recursion
         thingToValidate.Children.Add(new() { MinLengthFive = "123" });
         thingToValidate.Children.Add(new() { RequiredCategory = null });
 
-        var result = MiniValidator.TryValidate(thingToValidate, recurse: true, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: true, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -198,7 +198,7 @@ public class Recursion
         thingToValidate.Children.Add(new());
         thingToValidate.Children.Add(new() { RequiredCategory = null, MinLengthFive = "123" });
 
-        var result = MiniValidator.TryValidate(thingToValidate, recurse: true, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: true, out var errors);
 
         Assert.False(result);
         Assert.Equal(2, errors.Count);
@@ -214,7 +214,7 @@ public class Recursion
         thingToValidate.Children.Add(new());
         thingToValidate.Children.Add(new() { SkippedChild = new() { RequiredCategory = null } });
 
-        var result = MiniValidator.TryValidate(thingToValidate, recurse: false, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: false, out var errors);
 
         Assert.True(result);
         Assert.Empty(errors);
@@ -225,7 +225,7 @@ public class Recursion
     {
         var thingToValidate = new TestSkippedChildType();
 
-        var result = MiniValidator.TryValidate(thingToValidate, recurse: false, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: false, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -236,7 +236,7 @@ public class Recursion
     {
         var thingToValidate = new TestType { Child = new TestChildTypeDerivative { RequiredCategory = null } };
 
-        var result = MiniValidator.TryValidate(thingToValidate, recurse: true, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: true, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -247,7 +247,7 @@ public class Recursion
     {
         var thingToValidate = new TestType { Child = new TestChildTypeDerivative { DerivedMinLengthTen = "123" } };
 
-        var result = MiniValidator.TryValidate(thingToValidate, recurse: true, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: true, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -258,7 +258,7 @@ public class Recursion
     {
         var thingToValidate = new TestType { Child = new TestChildTypeDerivative { DerivedMinLengthTen = "123" } };
 
-        var result = MiniValidator.TryValidate(thingToValidate, recurse: false, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: false, out var errors);
 
         Assert.True(result);
         Assert.Empty(errors);
@@ -272,7 +272,7 @@ public class Recursion
             ValidatableChild = new TestValidatableChildType { TwentyOrMore = 12 }
         };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -287,7 +287,7 @@ public class Recursion
             Child = new TestValidatableChildType { TwentyOrMore = 19 }
         };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -302,7 +302,7 @@ public class Recursion
             Child = new TestValidatableChildType { MinLengthFive = "123" }
         };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -318,7 +318,7 @@ public class Recursion
             ValidatableChild = new() { TwentyOrMore = 12 }
         };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         Assert.Equal(2, errors.Count);
@@ -333,7 +333,7 @@ public class Recursion
             ValidatableOnlyChild = new TestValidatableOnlyType { TwentyOrMore = 12 }
         };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -348,7 +348,7 @@ public class Recursion
             PocoChild = new TestValidatableOnlyType { TwentyOrMore = 12 }
         };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -363,7 +363,7 @@ public class Recursion
             PocoChild = new TestChildType { MinLengthFive = "123" }
         };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -380,7 +380,7 @@ public class Recursion
 
         Assert.Throws<ArgumentException>(() =>
         {
-            var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+            var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
         });
     }
 
@@ -392,7 +392,7 @@ public class Recursion
             NeedsAsync = new() { TwentyOrMore = 12 }
         };
 
-        var (isValid, errors) = await MiniValidator.TryValidateAsync(thingToValidate);
+        var (isValid, errors) = await MiniValidatorPlus.TryValidateAsync(thingToValidate);
 
         Assert.False(isValid);
         Assert.Single(errors);
@@ -407,7 +407,7 @@ public class Recursion
             NeedsAsync = new() { TwentyOrMore = 12 }
         };
 
-        var result = MiniValidator.TryValidate(thingToValidate, recurse: true, allowAsync: true, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: true, allowAsync: true, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -429,7 +429,7 @@ public class Recursion
 
             try
             {
-                var result = MiniValidator.TryValidate(thingToValidate, serviceProvider, out var errors);
+                var result = MiniValidatorPlus.TryValidate(thingToValidate, serviceProvider, out var errors);
             }
             finally
             {
@@ -446,7 +446,7 @@ public class Recursion
             PocoChild = new TestAsyncValidatableChildType { TwentyOrMore = 12 }
         };
 
-        var result = MiniValidator.TryValidate(thingToValidate, recurse: true, allowAsync: true, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: true, allowAsync: true, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -461,7 +461,7 @@ public class Recursion
             PocoChild = new TestAsyncValidatableChildType { TwentyOrMore = 12 }
         };
 
-        var (isValid, errors) = await MiniValidator.TryValidateAsync(thingToValidate);
+        var (isValid, errors) = await MiniValidatorPlus.TryValidateAsync(thingToValidate);
 
         Assert.False(isValid);
         Assert.Single(errors);

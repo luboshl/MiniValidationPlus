@@ -12,7 +12,7 @@ var widgets = new List<Widget>
 var allValid = true;
 foreach (var widget in widgets)
 {
-    if (!MiniValidator.TryValidate(widget, out var errors))
+    if (!MiniValidatorPlus.TryValidate(widget, out var errors))
     {
         allValid = false;
         Console.WriteLine($"{nameof(Widget)} has errors!");
