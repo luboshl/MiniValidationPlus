@@ -11,7 +11,7 @@ public class TryValidate
         TestType thingToValidate = null;
 
         Assert.Throws<ArgumentNullException>(() =>
-            MiniValidator.TryValidate(thingToValidate, out var errors));
+            MiniValidatorPlus.TryValidate(thingToValidate, out var errors));
     }
 #nullable enable
 
@@ -20,7 +20,7 @@ public class TryValidate
     {
         var thingToValidate = new TestType { RequiredName = null };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         var entry = Assert.Single(errors);
@@ -32,7 +32,7 @@ public class TryValidate
     {
         var thingToValidate = new TestType { RequiredName = string.Empty };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         var entry = Assert.Single(errors);
@@ -44,7 +44,7 @@ public class TryValidate
     {
         var thingToValidate = new TestType { RequiredName = "test" };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.True(result);
         Assert.Empty(errors);
@@ -55,7 +55,7 @@ public class TryValidate
     {
         var thingToValidate = new TestType { TenOrMore = 5 };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         var entry = Assert.Single(errors);
@@ -67,7 +67,7 @@ public class TryValidate
     {
         var thingToValidate = new TestType { TenOrMore = 11 };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.True(result);
         Assert.Empty(errors);
@@ -79,7 +79,7 @@ public class TryValidate
     {
         var thingToValidate = new TestRecordType(TenOrMore: 11);
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.True(result);
         Assert.Empty(errors);
@@ -90,7 +90,7 @@ public class TryValidate
     {
         var thingToValidate = new TestRecordType(TenOrMore: 9);
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -101,7 +101,7 @@ public class TryValidate
     {
         var thingToValidate = new TestType { NonNullableString = null! };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         var entry = Assert.Single(errors);
@@ -113,7 +113,7 @@ public class TryValidate
     {
         var thingToValidate = new TestType { NonNullableString = string.Empty };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.True(result);
         Assert.Empty(errors);
@@ -124,7 +124,7 @@ public class TryValidate
     {
         var thingToValidate = new TestType { NonNullableString = "test" };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.True(result);
         Assert.Empty(errors);
@@ -135,7 +135,7 @@ public class TryValidate
     {
         var thingToValidate = new TestRecordType(NonNullableString: string.Empty);
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.True(result);
         Assert.Empty(errors);
@@ -146,7 +146,7 @@ public class TryValidate
     {
         var thingToValidate = new TestRecordType(NonNullableString: "test");
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.True(result);
         Assert.Empty(errors);
@@ -157,7 +157,7 @@ public class TryValidate
     {
         var thingToValidate = new TestRecordType(NonNullableString: null!);
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -169,7 +169,7 @@ public class TryValidate
     {
         var thingToValidate = new TestType { RequiredName = "test", TenOrMore = 11 };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.True(result);
         Assert.Empty(errors);
@@ -180,7 +180,7 @@ public class TryValidate
     {
         var thingToValidate = new TestType { RequiredName = null, TenOrMore = 11 };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -191,7 +191,7 @@ public class TryValidate
     {
         var thingToValidate = new TestType { RequiredName = "test", TenOrMore = 5 };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -202,7 +202,7 @@ public class TryValidate
     {
         var thingToValidate = new TestType { RequiredName = null, TenOrMore = 5 };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         Assert.Equal(2, errors.Count);
@@ -213,7 +213,7 @@ public class TryValidate
     {
         var thingToValidate = new TestType { RequiredNameWithDisplay = null };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         var entry = Assert.Single(errors);
@@ -227,7 +227,7 @@ public class TryValidate
     {
         var thingToValidate = new TestRecordType("");
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         var entry = Assert.Single(errors);
@@ -241,7 +241,7 @@ public class TryValidate
     {
         var collectionToValidate = new List<TestType> { new() { RequiredName = null } };
 
-        var result = MiniValidator.TryValidate(collectionToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(collectionToValidate, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -272,7 +272,7 @@ public class TryValidate
 #pragma warning restore xUnit1045 // Avoid using TheoryData type arguments that might not be serializable
     public void Valid_When_Target_Is_Not_Complex(object thingToValidate)
     {
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.True(result);
         Assert.Empty(errors);
@@ -283,7 +283,7 @@ public class TryValidate
     {
         var thingToValidate = new TestStruct();
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.True(result);
         Assert.Empty(errors);
@@ -294,7 +294,7 @@ public class TryValidate
     {
         var thingToValidate = new TestStruct { RequiredName = null };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -308,7 +308,7 @@ public class TryValidate
             TwentyOrMore = 12
         };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -323,7 +323,7 @@ public class TryValidate
             TenOrMore = 9
         };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -339,7 +339,7 @@ public class TryValidate
             TwentyOrMore = 12
         };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -354,7 +354,7 @@ public class TryValidate
             TwentyOrMore = 12
         };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -369,7 +369,7 @@ public class TryValidate
             TwentyOrMore = 12
         };
 
-        var (isValid, errors) = await MiniValidator.TryValidateAsync(thingToValidate, true);
+        var (isValid, errors) = await MiniValidatorPlus.TryValidateAsync(thingToValidate, true);
 
         Assert.False(isValid);
         Assert.Single(errors);
@@ -386,7 +386,7 @@ public class TryValidate
 
         Assert.Throws<ArgumentException>("target", () =>
         {
-            var isValid = MiniValidator.TryValidate(thingToValidate, out var errors);
+            var isValid = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
         });
     }
 
@@ -395,7 +395,7 @@ public class TryValidate
     {
         var thingToValidate = new ClassWithUri { BaseAddress = new("https://example.com") };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.True(result);
         Assert.Empty(errors);
@@ -406,7 +406,7 @@ public class TryValidate
     {
         var thingToValidate = new ClassWithUri { BaseAddress = new("/a/relative/path", UriKind.Relative) };
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.True(result);
         Assert.Empty(errors);
@@ -417,7 +417,7 @@ public class TryValidate
     {
         var thingToValidate = new ClassWithUri();
 
-        var result = MiniValidator.TryValidate(thingToValidate, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
 
         Assert.False(result);
         Assert.Single(errors);
@@ -433,11 +433,11 @@ public class TryValidate
 
         var thingToValidate = new TestClassLevelValidatableOnlyTypeWithServiceProvider();
 
-        var result = MiniValidator.TryValidate(thingToValidate, serviceProvider, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, serviceProvider, out var errors);
         Assert.True(result);
 
         errors.Clear();
-        result = MiniValidator.TryValidate(thingToValidate, out errors);
+        result = MiniValidatorPlus.TryValidate(thingToValidate, out errors);
         Assert.False(result);
         Assert.Single(errors);
         Assert.Equal(nameof(IServiceProvider), errors.Keys.First());
@@ -452,13 +452,13 @@ public class TryValidate
 
         var thingToValidate = new TestClassLevelValidatableOnlyTypeWithServiceProvider();
 
-        var (isValid, errors) = await MiniValidator.TryValidateAsync(thingToValidate, serviceProvider);
+        var (isValid, errors) = await MiniValidatorPlus.TryValidateAsync(thingToValidate, serviceProvider);
 
         Assert.True(isValid);
         Assert.Empty(errors);
 
         errors.Clear();
-        (isValid, errors) = await MiniValidator.TryValidateAsync(thingToValidate);
+        (isValid, errors) = await MiniValidatorPlus.TryValidateAsync(thingToValidate);
         Assert.False(isValid);
         Assert.Single(errors);
         Assert.Equal(nameof(IServiceProvider), errors.Keys.First());
@@ -479,11 +479,11 @@ public class TryValidate
             }
         };
 
-        var result = MiniValidator.TryValidate(thingToValidate, serviceProvider, out var errors);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, serviceProvider, out var errors);
         Assert.True(result);
 
         errors.Clear();
-        result = MiniValidator.TryValidate(thingToValidate, out errors);
+        result = MiniValidatorPlus.TryValidate(thingToValidate, out errors);
         Assert.False(result);
         Assert.Single(errors);
         Assert.Equal($"{nameof(TestClassWithEnumerable<object>.Enumerable)}.[0].{nameof(IServiceProvider)}", errors.Keys.First());
@@ -504,11 +504,11 @@ public class TryValidate
             }
         };
 
-        var (isValid, errors) = await MiniValidator.TryValidateAsync(thingToValidate, serviceProvider);
+        var (isValid, errors) = await MiniValidatorPlus.TryValidateAsync(thingToValidate, serviceProvider);
         Assert.True(isValid);
 
         errors.Clear();
-        (isValid, errors) = await MiniValidator.TryValidateAsync(thingToValidate);
+        (isValid, errors) = await MiniValidatorPlus.TryValidateAsync(thingToValidate);
         Assert.False(isValid);
         Assert.Single(errors);
         Assert.Equal($"{nameof(TestClassWithEnumerable<object>.Enumerable)}.[0].{nameof(IServiceProvider)}", errors.Keys.First());
@@ -523,7 +523,7 @@ public class TryValidate
             nameof(TestTypeForTypeDescriptor.PropertyToBeRequired), 
             _ => new RequiredAttribute());
 
-        var (isValid, errors) = await MiniValidator.TryValidateAsync(thingToValidate);
+        var (isValid, errors) = await MiniValidatorPlus.TryValidateAsync(thingToValidate);
 
         Assert.False(isValid);
         Assert.Equal(2, errors.Count);
