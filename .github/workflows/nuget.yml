@@ -1,0 +1,19 @@
+name: NuGet
+
+on:
+  workflow_dispatch:
+
+jobs:
+  push-package:
+    name: Publish NuGet Package
+    runs-on: ubuntu-latest
+
+    steps:   
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+
+      - name: Add nuget.org source
+        run: dotnet nuget add source --name NUGET https://www.nuget.org
+
+      - name: Push to nuget.org
+        run: dotnet nuget push **/*.nupkg -s "NUGET" -k ${{ secrets.NUGET_APIKEY }}
