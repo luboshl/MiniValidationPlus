@@ -1,7 +1,7 @@
 <Project>
 
   <PropertyGroup>
-    <VersionPrefix>0.0.1</VersionPrefix>
+    <VersionPrefix>1.0.0</VersionPrefix>
     <!-- VersionSuffix used for local builds -->
     <VersionSuffix>dev</VersionSuffix>
     <!-- VersionSuffix to be used for CI builds -->
@@ -10,7 +10,6 @@
     <!--<VersionSuffix Condition=" '$(ContinuousIntegrationBuild)' == 'true' And '$(IsShipCandidate)' == 'true' ">pre.$(BuildNumber)</VersionSuffix>-->
     <Authors>Lubos Hladik</Authors>
     <Copyright>Copyright © Lubos Hladik</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/luboshl/MiniValidationPlus</PackageProjectUrl>
     <RepositoryUrl>https://github.com/luboshl/MiniValidationPlus</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
