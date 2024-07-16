@@ -15,7 +15,10 @@ internal class TypeDetailsCache
 {
     private static readonly PropertyDetails[] _emptyPropertyDetails = Array.Empty<PropertyDetails>();
     private readonly ConcurrentDictionary<Type, (PropertyDetails[] Properties, bool RequiresAsync)> _cache = new();
-
+#if NET6_0_OR_GREATER
+    private NonNullablePropertyHelper _nonNullablePropertyHelper = new();
+#endif
+    
     public (PropertyDetails[] Properties, bool RequiresAsync) Get(Type? type)
     {
         if (type is null)
@@ -91,7 +94,7 @@ internal class TypeDetailsCache
             validationAttributes ??= Array.Empty<ValidationAttribute>();
 
 #if NET6_0_OR_GREATER
-            var isNonNullableReferenceType = NonNullablePropertyHelper.IsNonNullableReferenceType(property);
+            var isNonNullableReferenceType = _nonNullablePropertyHelper.IsNonNullableReferenceType(property);
 #else
             var isNonNullableReferenceType = false;
 #endif
