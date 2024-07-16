@@ -4,11 +4,18 @@ on:
   workflow_dispatch:
 
 jobs:
+  build:
+    name: Build & Test
+    uses: ./.github/workflows/_build.yml
+    
   push-package:
     name: Publish NuGet Package
     runs-on: ubuntu-latest
 
-    steps:   
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
 
