@@ -6,8 +6,15 @@ class TestType
 {
     public string NonNullableString { get; set; } = "Default";
 
+    [SkipValidation]
+    public string SkippedValidationNonNullableString { get; set; } = "Default";
+
     [Required]
     public string? RequiredName { get; set; } = "Default";
+
+    [Required]
+    [SkipValidation]
+    public string? SkippedValidationRequiredName { get; set; } = "Default";
 
     [Required, Display(Name = "Required name")]
     public string? RequiredNameWithDisplay { get; set; } = "Default";
@@ -28,6 +35,9 @@ class TestType
 
     [SkipRecursion]
     public TestChildType SkippedRecursionChild { get; set; } = new TestChildType();
+
+    [SkipValidation]
+    public TestChildType SkippedValidationChild { get; set; } = new TestChildType();
 
     public IList<TestChildType> Children { get; } = new List<TestChildType>();
 }
@@ -141,6 +151,13 @@ class TestChildType
     public string? MinLengthFive { get; set; } = "Default";
 
     public TestChildType? Child { get; set; }
+
+    [SkipValidation]
+    public string SkippedValidationNonNullableString { get; set; } = "Default";
+
+    [Required]
+    [SkipValidation]
+    public string? SkippedValidationRequiredName { get; set; } = "Default";
 
     [SkipRecursion]
     public virtual TestChildType? SkippedRecursionChild { get; set; }

@@ -467,4 +467,59 @@ public class Recursion
         Assert.Single(errors);
         Assert.Equal($"{nameof(TestValidatableType.PocoChild)}.{nameof(TestAsyncValidatableChildType.TwentyOrMore)}", errors.Keys.First());
     }
+
+    [Fact]
+    public void Valid_When_String_Property_Invalid_And_Decorated_With_SkipValidation()
+    {
+        var thingToValidate = new TestType { SkippedValidationNonNullableString = null!};
+
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
+
+        Assert.True(result);
+        Assert.Empty(errors);
+    }
+    
+    [Fact]
+    public void Valid_When_Required_Property_Invalid_And_Decorated_With_SkipValidation()
+    {
+        var thingToValidate = new TestType { SkippedValidationRequiredName = null!};
+
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
+
+        Assert.True(result);
+        Assert.Empty(errors);
+    }
+    
+    [Fact]
+    public void Valid_When_Child_Invalid_And_Decorated_With_SkipValidation()
+    {
+        var thingToValidate = new TestType { SkippedValidationChild = new TestChildType { RequiredCategory = null, MinLengthFive = "123" } };
+
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: true, out var errors);
+
+        Assert.True(result);
+        Assert.Empty(errors);
+    }
+    
+    [Fact]
+    public void Valid_When_Child_Has_Invalid_String_Property_Decorated_With_SkipValidation()
+    {
+        var thingToValidate = new TestType { Child = new TestChildType { SkippedValidationNonNullableString = null! } };
+
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: true, out var errors);
+
+        Assert.True(result);
+        Assert.Empty(errors);
+    }
+    
+    [Fact]
+    public void Valid_When_Child_Has_Invalid_Required_Property_Decorated_With_SkipValidation()
+    {
+        var thingToValidate = new TestType { Child = new TestChildType { SkippedValidationRequiredName = null! } };
+
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: true, out var errors);
+
+        Assert.True(result);
+        Assert.Empty(errors);
+    }
 }
