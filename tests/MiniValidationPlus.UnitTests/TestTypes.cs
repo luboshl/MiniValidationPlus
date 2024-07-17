@@ -6,8 +6,15 @@ class TestType
 {
     public string NonNullableString { get; set; } = "Default";
 
+    [SkipValidation]
+    public string SkippedValidationNonNullableString { get; set; } = "Default";
+
     [Required]
     public string? RequiredName { get; set; } = "Default";
+
+    [Required]
+    [SkipValidation]
+    public string? SkippedValidationRequiredName { get; set; } = "Default";
 
     [Required, Display(Name = "Required name")]
     public string? RequiredNameWithDisplay { get; set; } = "Default";
@@ -27,9 +34,15 @@ class TestType
     public IAnInterface? InterfaceProperty { get; set; }
 
     [SkipRecursion]
-    public TestChildType SkippedChild { get; set; } = new TestChildType();
+    public TestChildType SkippedRecursionChild { get; set; } = new TestChildType();
+
+    [SkipValidation]
+    public TestChildType SkippedValidationChild { get; set; } = new TestChildType();
 
     public IList<TestChildType> Children { get; } = new List<TestChildType>();
+
+    [SkipValidation]
+    public string SkippedPropertyThrowingException => throw new InvalidOperationException();
 }
 
 class TestValidatableType : TestType, IValidatableObject
@@ -142,8 +155,15 @@ class TestChildType
 
     public TestChildType? Child { get; set; }
 
+    [SkipValidation]
+    public string SkippedValidationNonNullableString { get; set; } = "Default";
+
+    [Required]
+    [SkipValidation]
+    public string? SkippedValidationRequiredName { get; set; } = "Default";
+
     [SkipRecursion]
-    public virtual TestChildType? SkippedChild { get; set; }
+    public virtual TestChildType? SkippedRecursionChild { get; set; }
 
     internal static void AddDescendents(TestChildType target, int maxDepth, int currentDepth = 1)
     {
@@ -215,7 +235,7 @@ class TestSkippedChildType
 {
     [Required]
     [SkipRecursion]
-    public TestChildType? RequiredSkippedChild { get; set; }
+    public TestChildType? RequiredSkippedRecursionChild { get; set; }
 }
 
 struct TestStruct

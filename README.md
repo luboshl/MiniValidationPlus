@@ -217,3 +217,48 @@ class WidgetWithCustomValidation : Widget, IValidatableObject
     }
 }
 ```
+
+## Skip validation
+
+You can set property to be skipped when validation is performed by setting `SkipValidationAttribute`
+on it. If you want to perform validation on the property, but not to validate it recursively
+(validate properties of the property), you can set `SkipRecursionAttribute` on it.
+
+When you use `SkipValidationAttribute` on a property, recursion is also skipped for that property.
+
+### Examples
+
+```csharp
+class Model
+{
+    [SkipValidation]
+    public string Name => throw new InvalidOperationException();
+
+    public ValidChild ValidChild { get; set; }
+
+    public ValidChildWithInvalidSkippedProperty ValidChildWithInvalidSkippedProperty { get; set; }
+
+    [SkipRecursion]
+    public InvalidChild InvalidChild { get; set; }
+}
+
+class ValidChild
+{
+    [Range(10, 100)]
+    public int TenOrMore { get; set; } = 10;
+}
+
+class ValidChildWithInvalidSkippedProperty
+{
+    // Property is invalid but is skipped
+    [SkipValidation]
+    public string Name { get; set; } = null!;
+}
+
+class InvalidChild
+{
+    // Property is invalid
+    [Range(10, 100)]
+    public int TenOrMore { get; set; } = 3;
+}
+```
