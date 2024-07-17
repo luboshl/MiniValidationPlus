@@ -40,6 +40,9 @@ class TestType
     public TestChildType SkippedValidationChild { get; set; } = new TestChildType();
 
     public IList<TestChildType> Children { get; } = new List<TestChildType>();
+
+    [SkipValidation]
+    public string SkippedPropertyThrowingException => throw new InvalidOperationException();
 }
 
 class TestValidatableType : TestType, IValidatableObject

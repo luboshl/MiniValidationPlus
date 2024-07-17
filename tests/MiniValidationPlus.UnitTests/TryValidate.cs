@@ -553,4 +553,18 @@ public class TryValidate
         Assert.True(result);
         Assert.Empty(errors);
     }
+    
+    [Fact]
+    public void Valid_When_Property_With_Setter_Throwing_Exception_And_Decorated_With_SkipValidation()
+    {
+        var thingToValidate = new TestType();
+        var setter = () => thingToValidate.SkippedPropertyThrowingException;
+
+        var exception = Record.Exception(setter);
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
+
+        Assert.NotNull(exception);
+        Assert.True(result);
+        Assert.Empty(errors);
+    }
 }
