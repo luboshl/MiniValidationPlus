@@ -91,7 +91,8 @@ internal class TypeDetailsCache
                 continue;
             }
 
-            var (validationAttributes, displayAttribute, skipRecursionAttribute) = TypeDetailsCache.GetPropertyAttributes(primaryCtorParams, property);
+            var (validationAttributes, displayAttribute, skipRecursionAttribute, skipValidationAttribute)
+                = TypeDetailsCache.GetPropertyAttributes(primaryCtorParams, property);
             validationAttributes ??= Array.Empty<ValidationAttribute>();
 
 #if NET6_0_OR_GREATER
@@ -102,6 +103,7 @@ internal class TypeDetailsCache
 
             var hasValidationOnProperty = validationAttributes.Length > 0 || isNonNullableReferenceType;
             var hasSkipRecursionOnProperty = skipRecursionAttribute is not null;
+            var hasSkipValidationAttribute = skipValidationAttribute is not null;
             var enumerableType = GetEnumerableType(property.PropertyType);
             if (enumerableType != null && property.PropertyType != typeof(string))
             {
@@ -110,7 +112,7 @@ internal class TypeDetailsCache
 
             // Defer fully checking properties that are of the same type we're currently building the cache for.
             // We'll remove them at the end if any other validatable properties are present.
-            if (type == property.PropertyType && !hasSkipRecursionOnProperty)
+            if (type == property.PropertyType && !hasSkipRecursionOnProperty && !hasSkipValidationAttribute)
             {
                 propertiesToValidate ??= new List<PropertyDetails>();
                 propertiesToValidate.Add(
@@ -140,7 +142,8 @@ internal class TypeDetailsCache
                 || propertyTypeSupportsPolymorphism)
                 && !hasSkipRecursionOnProperty;
 
-            if (recurse || hasValidationOnProperty || isNonNullableReferenceType)
+            if (!hasSkipValidationAttribute
+                && (recurse || hasValidationOnProperty || isNonNullableReferenceType))
             {
                 propertiesToValidate ??= new List<PropertyDetails>();
                 propertiesToValidate.Add(
@@ -203,11 +206,13 @@ internal class TypeDetailsCache
     // TODO: Add extension point to add other types to ignore
     ;
 
-    private static (ValidationAttribute[]?, DisplayAttribute?, SkipRecursionAttribute?) GetPropertyAttributes(ParameterInfo[]? primaryCtorParameters, PropertyInfo property)
+    private static (ValidationAttribute[]?, DisplayAttribute?, SkipRecursionAttribute?, SkipValidationAttribute?)
+        GetPropertyAttributes(ParameterInfo[]? primaryCtorParameters, PropertyInfo property)
     {
         List<ValidationAttribute>? validationAttributes = null;
         DisplayAttribute? displayAttribute = null;
         SkipRecursionAttribute? skipRecursionAttribute = null;
+        SkipValidationAttribute? skipValidationAttribute = null;
 
         IEnumerable<Attribute>? paramAttributes = null;
         if (primaryCtorParameters is { } ctorParams)
@@ -251,9 +256,13 @@ internal class TypeDetailsCache
             {
                 skipRecursionAttribute = skipRecursionAttr;
             }
+            else if (attr is SkipValidationAttribute skipValidationAttr)
+            {
+                skipValidationAttribute = skipValidationAttr;
+            }
         }
 
-        return new(validationAttributes?.ToArray(), displayAttribute, skipRecursionAttribute);
+        return new(validationAttributes?.ToArray(), displayAttribute, skipRecursionAttribute, skipValidationAttribute);
     }
 
     private static bool TryGetAttributesViaTypeDescriptor(PropertyInfo property, [NotNullWhen(true)] out IEnumerable<Attribute>? typeDescriptorAttributes)
