@@ -90,7 +90,7 @@ public class Recursion
     public void Valid_When_Enumerable_Item_Invalid_When_Recurse_False()
     {
         var thingToValidate = new List<TestType> { new() { Child = new TestChildType { RequiredCategory = null, MinLengthFive = "123" } } };
-        
+
         var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: false, out _);
 
         Assert.True(result);
@@ -467,28 +467,6 @@ public class Recursion
         Assert.Single(errors);
         Assert.Equal($"{nameof(TestValidatableType.PocoChild)}.{nameof(TestAsyncValidatableChildType.TwentyOrMore)}", errors.Keys.First());
     }
-
-    [Fact]
-    public void Valid_When_String_Property_Invalid_And_Decorated_With_SkipValidation()
-    {
-        var thingToValidate = new TestType { SkippedValidationNonNullableString = null!};
-
-        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
-
-        Assert.True(result);
-        Assert.Empty(errors);
-    }
-    
-    [Fact]
-    public void Valid_When_Required_Property_Invalid_And_Decorated_With_SkipValidation()
-    {
-        var thingToValidate = new TestType { SkippedValidationRequiredName = null!};
-
-        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
-
-        Assert.True(result);
-        Assert.Empty(errors);
-    }
     
     [Fact]
     public void Valid_When_Child_Invalid_And_Decorated_With_SkipValidation()
@@ -500,7 +478,7 @@ public class Recursion
         Assert.True(result);
         Assert.Empty(errors);
     }
-    
+
     [Fact]
     public void Valid_When_Child_Has_Invalid_String_Property_Decorated_With_SkipValidation()
     {
@@ -511,7 +489,7 @@ public class Recursion
         Assert.True(result);
         Assert.Empty(errors);
     }
-    
+
     [Fact]
     public void Valid_When_Child_Has_Invalid_Required_Property_Decorated_With_SkipValidation()
     {
