@@ -27,7 +27,7 @@ class TestType
     public IAnInterface? InterfaceProperty { get; set; }
 
     [SkipRecursion]
-    public TestChildType SkippedChild { get; set; } = new TestChildType();
+    public TestChildType SkippedRecursionChild { get; set; } = new TestChildType();
 
     public IList<TestChildType> Children { get; } = new List<TestChildType>();
 }
@@ -143,7 +143,7 @@ class TestChildType
     public TestChildType? Child { get; set; }
 
     [SkipRecursion]
-    public virtual TestChildType? SkippedChild { get; set; }
+    public virtual TestChildType? SkippedRecursionChild { get; set; }
 
     internal static void AddDescendents(TestChildType target, int maxDepth, int currentDepth = 1)
     {
@@ -215,7 +215,7 @@ class TestSkippedChildType
 {
     [Required]
     [SkipRecursion]
-    public TestChildType? RequiredSkippedChild { get; set; }
+    public TestChildType? RequiredSkippedRecursionChild { get; set; }
 }
 
 struct TestStruct

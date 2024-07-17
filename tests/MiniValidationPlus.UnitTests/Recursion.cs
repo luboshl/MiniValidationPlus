@@ -56,7 +56,7 @@ public class Recursion
     [Fact]
     public void Valid_When_Child_Invalid_And_Property_Decorated_With_SkipRecursion()
     {
-        var thingToValidate = new TestType { SkippedChild = new TestChildType { RequiredCategory = null, MinLengthFive = "123" } };
+        var thingToValidate = new TestType { SkippedRecursionChild = new TestChildType { RequiredCategory = null, MinLengthFive = "123" } };
 
         var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: false, out var errors);
 
@@ -99,7 +99,7 @@ public class Recursion
     [Fact]
     public void Valid_When_Enumerable_Item_Has_Invalid_Descendant_But_Property_Decorated_With_SkipRecursion()
     {
-        var thingToValidate = new List<TestType> { new() { SkippedChild = new() { RequiredCategory = null } } };
+        var thingToValidate = new List<TestType> { new() { SkippedRecursionChild = new() { RequiredCategory = null } } };
 
         var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: true, out _);
 
@@ -212,7 +212,7 @@ public class Recursion
     {
         var thingToValidate = new TestType();
         thingToValidate.Children.Add(new());
-        thingToValidate.Children.Add(new() { SkippedChild = new() { RequiredCategory = null } });
+        thingToValidate.Children.Add(new() { SkippedRecursionChild = new() { RequiredCategory = null } });
 
         var result = MiniValidatorPlus.TryValidate(thingToValidate, recurse: false, out var errors);
 
