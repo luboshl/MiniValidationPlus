@@ -32,9 +32,10 @@ public static class MiniValidatorPlus
     /// </remarks>
     /// <param name="targetType">The <see cref="Type"/>.</param>
     /// <param name="recurse"><c>true</c> to recursively check descendant types; if <c>false</c> only simple values directly on the target type are checked.</param>
+    /// <param name="validateNonNullableReferenceTypes"><c>true</c> to validate properties of non-nullable reference types as required.</param>
     /// <returns><c>true</c> if <paramref name="targetType"/> has anything to validate, <c>false</c> if not.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="targetType"/> is <c>null</c>.</exception>
-    public static bool RequiresValidation(Type targetType, bool recurse = true)
+    public static bool RequiresValidation(Type targetType, bool recurse, bool validateNonNullableReferenceTypes)
     {
         if (targetType is null)
         {
@@ -45,7 +46,9 @@ public static class MiniValidatorPlus
             || typeof(IAsyncValidatableObject).IsAssignableFrom(targetType)
             || (recurse && typeof(IEnumerable).IsAssignableFrom(targetType))
             || _typeDetailsCache.Get(targetType).Properties
-                .Any(p => p.HasValidationAttributes || p.IsNonNullableType || recurse);
+                .Any(p => p.HasValidationAttributes
+                          || (validateNonNullableReferenceTypes && p.IsNonNullableType)
+                          || recurse);
     }
 
     /// <summary>
@@ -184,7 +187,7 @@ public static class MiniValidatorPlus
             throw new ArgumentNullException(nameof(target));
         }
 
-        if (!RequiresValidation(target.GetType(), settings.Recurse))
+        if (!RequiresValidation(target.GetType(), settings.Recurse, settings.ValidateNonNullableReferenceTypes))
         {
             errors = _emptyErrors;
 
@@ -356,7 +359,7 @@ public static class MiniValidatorPlus
 
         IDictionary<string, string[]>? errors;
 
-        if (!RequiresValidation(target.GetType(), settings.Recurse))
+        if (!RequiresValidation(target.GetType(), settings.Recurse, settings.ValidateNonNullableReferenceTypes))
         {
             errors = _emptyErrors;
 
@@ -457,7 +460,7 @@ public static class MiniValidatorPlus
                 isPropertyValid = Validator.TryValidateValue(propertyValue!, validationContext, validationResults, property.ValidationAttributes);
             }
 
-            if (property.IsNonNullableType)
+            if (settings.ValidateNonNullableReferenceTypes && property.IsNonNullableType)
             {
                 validationContext.MemberName = property.Name;
                 validationContext.DisplayName = GetDisplayName(property);
