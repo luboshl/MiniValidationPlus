@@ -13,4 +13,14 @@ public record ValidationSettings(
     IServiceProvider? ServiceProvider = null,
     bool Recurse = true,
     bool AllowAsync = false,
-    bool ValidateNonNullableReferenceTypes = true);
+    bool ValidateNonNullableReferenceTypes = true)
+{
+    /// <summary>
+    /// Default settings.
+    /// </summary>
+    public static ValidationSettings Default { get; } = new(
+        ServiceProvider: null,
+        Recurse: true,
+        AllowAsync: false,
+        ValidateNonNullableReferenceTypes: true);
+}
