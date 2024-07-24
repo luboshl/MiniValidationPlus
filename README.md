@@ -262,3 +262,12 @@ class InvalidChild
     public int TenOrMore { get; set; } = 3;
 }
 ```
+
+## Opt-out validation of non-nullable reference types
+
+You can disable validation of properties that are non-nullable reference types by configuring `ValidationSettings`:
+
+```csharp
+var validationSettings = ValidationSettings.Default with { ValidateNonNullableReferenceTypes = false };
+var isValid = MiniValidatorPlus.TryValidate(objectToValidate, validationSettings, out var errors);
+```
