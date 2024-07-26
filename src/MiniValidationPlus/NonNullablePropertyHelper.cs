@@ -24,7 +24,7 @@ namespace MiniValidationPlus
             }
 
             var nullabilityInfo = nullabilityContext.Create(propertyInfo);
-            return nullabilityInfo.WriteState is not NullabilityState.Nullable;
+            return nullabilityInfo.ReadState is not NullabilityState.Nullable;
         }
     }
 }
