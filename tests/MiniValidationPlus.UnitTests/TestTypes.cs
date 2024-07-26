@@ -310,3 +310,11 @@ class TestTypeWithPropertiesWithoutSetter
         RequiredNullableString = requiredNullableString;
     }
 }
+
+class ValidatableObjectWithSuccessValidationResultTestType : IValidatableObject
+{
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        yield return ValidationResult.Success;
+    }
+}

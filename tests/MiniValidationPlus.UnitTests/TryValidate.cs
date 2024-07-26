@@ -433,6 +433,17 @@ public class TryValidate
     }
 
     [Fact]
+    public void Valid_When_ValidatableObject_Has_Success_ValidationResult()
+    {
+        var thingToValidate = new ValidatableObjectWithSuccessValidationResultTestType();
+
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
+
+        Assert.True(result);
+        Assert.Empty(errors);
+    }
+    
+    [Fact]
     public void Invalid_When_ValidatableObject_Validate_Is_Invalid()
     {
         var thingToValidate = new TestValidatableType
