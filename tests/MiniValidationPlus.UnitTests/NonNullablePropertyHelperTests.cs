@@ -36,6 +36,7 @@ public class NonNullablePropertyHelperTests
         Assert.Contains(nameof(ClassModel.IntNullable), other);
         Assert.Contains(nameof(ClassModel.StringNullable), other);
         Assert.Contains(nameof(ClassModel.AnotherNullable), other);
+        Assert.Contains(nameof(ClassModel.StringNullableWithoutSetter), other);
     }
 
     [Fact]
@@ -70,12 +71,14 @@ public class NonNullablePropertyHelperTests
         Assert.Contains(nameof(RecordModel.AnotherNullable), other);
     }
 
+    [SuppressMessage("ReSharper", "UnassignedGetOnlyAutoProperty")]
     private class ClassModel
     {
         public int IntNonNullable { get; set; }
         public int? IntNullable { get; set; }
         public string StringNonNullable { get; set; } = null!;
         public string? StringNullable { get; set; }
+        public string? StringNullableWithoutSetter { get; }
         public AnotherModel AnotherNonNullable { get; set; } = new();
         public AnotherModel? AnotherNullable { get; set; }
     }

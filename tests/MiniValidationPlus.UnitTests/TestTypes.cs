@@ -285,3 +285,28 @@ class TestTypeForTypeDescriptor
     [MaxLength(1)]
     public string? AnotherProperty { get; set; } = "Test";
 }
+
+class TestTypeWithPropertiesWithoutSetter
+{
+    public string NonNullableString { get; }
+
+    public string? NullableString { get; }
+
+    [Required(AllowEmptyStrings = false)]
+    public string RequiredNonNullableString { get; }
+
+    [Required(AllowEmptyStrings = false)]
+    public string? RequiredNullableString { get; }
+
+    public TestTypeWithPropertiesWithoutSetter(
+        string nonNullableString = "Default",
+        string? nullableString = "Default",
+        string requiredNonNullableString = "Default", 
+        string? requiredNullableString = "Default")
+    {
+        NonNullableString = nonNullableString;
+        NullableString = nullableString;
+        RequiredNonNullableString = requiredNonNullableString;
+        RequiredNullableString = requiredNullableString;
+    }
+}

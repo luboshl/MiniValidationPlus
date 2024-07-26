@@ -162,6 +162,138 @@ public class TryValidate
         Assert.False(result);
         Assert.Single(errors);
     }
+
+    [Fact]
+    public void PropertyWithoutSetter_NonNullable_Valid_When_NonEmpty()
+    {
+        var thingToValidate = new TestTypeWithPropertiesWithoutSetter(nonNullableString: "test");
+
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
+
+        Assert.True(result);
+        Assert.Empty(errors);
+    }   
+
+    [Fact]
+    public void PropertyWithoutSetter_NonNullable_Valid_When_Empty()
+    {
+        var thingToValidate = new TestTypeWithPropertiesWithoutSetter(nonNullableString: string.Empty);
+
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
+
+        Assert.True(result);
+        Assert.Empty(errors);
+    }   
+
+    [Fact]
+    public void PropertyWithoutSetter_NonNullable_Invalid_When_Null()
+    {
+        var thingToValidate = new TestTypeWithPropertiesWithoutSetter(nonNullableString: null!);
+
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
+
+        Assert.False(result);
+        Assert.Single(errors);
+    }
+
+    [Fact]
+    public void PropertyWithoutSetter_Nullable_Valid_When_NonEmpty()
+    {
+        var thingToValidate = new TestTypeWithPropertiesWithoutSetter(nullableString: "test");
+
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
+
+        Assert.True(result);
+        Assert.Empty(errors);
+    }   
+
+    [Fact]
+    public void PropertyWithoutSetter_Nullable_Valid_When_Empty()
+    {
+        var thingToValidate = new TestTypeWithPropertiesWithoutSetter(nullableString: string.Empty);
+
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
+
+        Assert.True(result);
+        Assert.Empty(errors);
+    }   
+
+    [Fact]
+    public void PropertyWithoutSetter_Nullable_Valid_When_Null()
+    {
+        var thingToValidate = new TestTypeWithPropertiesWithoutSetter(nullableString: null!);
+
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
+
+        Assert.True(result);
+        Assert.Empty(errors);
+    }
+
+    [Fact]
+    public void PropertyWithoutSetter_RequiredNonNullable_Valid_When_NonEmpty()
+    {
+        var thingToValidate = new TestTypeWithPropertiesWithoutSetter(requiredNonNullableString: "test");
+
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
+
+        Assert.True(result);
+        Assert.Empty(errors);
+    }   
+
+    [Fact]
+    public void PropertyWithoutSetter_RequiredNonNullable_Invalid_When_Empty()
+    {
+        var thingToValidate = new TestTypeWithPropertiesWithoutSetter(requiredNonNullableString: string.Empty);
+
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
+
+        Assert.False(result);
+        Assert.Single(errors);
+    }   
+
+    [Fact]
+    public void PropertyWithoutSetter_RequiredNonNullable_Invalid_When_Null()
+    {
+        var thingToValidate = new TestTypeWithPropertiesWithoutSetter(requiredNonNullableString: null!);
+
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
+
+        Assert.False(result);
+        Assert.Single(errors);
+    }
+
+    [Fact]
+    public void PropertyWithoutSetter_RequiredNullable_Valid_When_NonEmpty()
+    {
+        var thingToValidate = new TestTypeWithPropertiesWithoutSetter(requiredNullableString: "test");
+
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
+
+        Assert.True(result);
+        Assert.Empty(errors);
+    }   
+
+    [Fact]
+    public void PropertyWithoutSetter_RequiredNullable_Invalid_When_Empty()
+    {
+        var thingToValidate = new TestTypeWithPropertiesWithoutSetter(requiredNullableString: string.Empty);
+
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
+
+        Assert.False(result);
+        Assert.Single(errors);
+    }   
+
+    [Fact]
+    public void PropertyWithoutSetter_RequiredNullable_Invalid_When_Null()
+    {
+        var thingToValidate = new TestTypeWithPropertiesWithoutSetter(requiredNullableString: null!);
+
+        var result = MiniValidatorPlus.TryValidate(thingToValidate, out var errors);
+
+        Assert.False(result);
+        Assert.Single(errors);
+    }
 #endif
 
     [Fact]
