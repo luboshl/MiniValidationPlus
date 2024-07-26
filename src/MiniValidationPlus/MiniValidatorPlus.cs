@@ -700,7 +700,9 @@ public static class MiniValidatorPlus
 
     private static void ProcessValidationResults(IEnumerable<ValidationResult> validationResults, Dictionary<string, List<string>> errors, string? prefix)
     {
-        foreach (var result in validationResults)
+        var failedValidationResults = validationResults.Where(x => x != ValidationResult.Success);
+        
+        foreach (var result in failedValidationResults)
         {
             var hasMemberNames = false;
             foreach (var memberName in result.MemberNames)
